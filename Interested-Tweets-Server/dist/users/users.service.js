@@ -64,7 +64,7 @@ let UsersService = class UsersService {
             throw new common_1.UnauthorizedException('Invalid credentials');
         }
         const jwtToken = await this.generateJWT(user);
-        return `Welcome, ${user.name} Login Sucessful \n Token : ${jwtToken}`;
+        return { success: true, message: 'Logged In Successfully', token: jwtToken };
     }
     async generateJWT(user) {
         const { name } = user;

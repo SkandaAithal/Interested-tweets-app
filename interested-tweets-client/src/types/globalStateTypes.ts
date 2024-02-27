@@ -5,6 +5,8 @@ export interface ProviderProps {
 }
 export interface GlobalStateType {
   isLoggedin?: boolean;
+  isNotification: boolean;
+  notifyMessage: string;
 }
 export interface GlobalAction {
   type: string;

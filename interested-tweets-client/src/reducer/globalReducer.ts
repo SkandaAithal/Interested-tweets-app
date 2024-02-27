@@ -10,6 +10,24 @@ export default function reducerFunction(
         ...state,
         isLoggedin: false,
       };
+
+    case "LOGIN":
+      return {
+        ...state,
+        isLoggedin: true,
+      };
+
+    case "NOTIFY":
+      return {
+        ...state,
+        isNotification: true,
+        notifyMessage: action.payload,
+      };
+    case "CLOSE_NOTIFY":
+      return {
+        ...state,
+        isNotification: false,
+      };
   }
   return state;
 }
