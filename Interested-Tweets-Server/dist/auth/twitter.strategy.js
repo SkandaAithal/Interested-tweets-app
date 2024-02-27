@@ -29,8 +29,8 @@ let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrat
     async validate(req, accessToken, refreshToken, profile, done) {
         common_1.Logger.log(`Twitter UserProfile`, 'Auth');
         const jsonProfile = (profile && profile._json) || {};
-        console.log(profile);
         const userProfile = {
+            userId: profile.id || jsonProfile.id,
             twitterid: profile.id || jsonProfile.id,
             name: profile.username || jsonProfile.username,
             email: (profile.emails && profile.emails[0].value) ||
@@ -38,8 +38,8 @@ let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrat
             displayName: profile.displayName,
             picture: null,
         };
-        console.log(userProfile);
         const oauthResponse = await this.oauth.validateOAuthLogin(userProfile);
+        console.log(oauthResponse);
     }
 };
 exports.TwitterStrategy = TwitterStrategy;

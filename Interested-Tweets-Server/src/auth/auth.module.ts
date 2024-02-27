@@ -5,11 +5,13 @@ import { OauthService } from './oauth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { oAuthController } from 'src/auth/auth.controller';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'twitter' }),
     TypeOrmModule.forFeature([User]),
+    UsersModule
   ],
   controllers: [oAuthController],
   providers: [TwitterStrategy, OauthService],

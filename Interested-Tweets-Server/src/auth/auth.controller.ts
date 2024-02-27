@@ -7,12 +7,14 @@ import {
 } from '@nestjs/swagger';
 import { TwitterGuard } from 'src/users/twitter-guard';
 import { OauthService } from 'src/auth/oauth.service';
+import AuthenticatedRequest from './authenticated-request.interface';
 
 @ApiTags('auth')
 @ApiBearerAuth() // Adding bearer authentication to all endpoints in this controller
 @Controller('auth')
 export class oAuthController {
-  constructor(private readonly oauthService: OauthService) {}
+  constructor(private readonly oauthService: OauthService,
+    ) {}
 
   @Get('login')
   @UseGuards(TwitterGuard)
@@ -21,8 +23,6 @@ export class oAuthController {
     description: 'Bad request. Please check your input data.',
   })
   async twitterLogin(@Req() req: Request, @Res() res: Response) {
-    // Handle Twitter login redirection
-    // this.oauthService.twitterLogin(req, res);
   }
 
   @Get('callbackUrl')

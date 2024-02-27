@@ -57,25 +57,12 @@ let UsersService = class UsersService {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             throw new common_1.UnauthorizedException('Invalid credentials');
         }
-        const jwtToken = await this.generateJWT(user);
-        return `Welcome, ${user.name} Login Sucessful \n Token : ${jwtToken}`;
-    }
-    async generateJWT(user) {
-        const { name } = user;
         const jwtPayload = { name };
         const jwtToken = await this.jwtService.signAsync(jwtPayload, {
             expiresIn: '1d',
             algorithm: 'HS512',
         });
-        return jwtToken;
-    }
-    async generateJWTTwitter(twitterid) {
-        const jwtPayload = { twitterid };
-        const jwtToken = await this.jwtService.signAsync(jwtPayload, {
-            expiresIn: '1d',
-            algorithm: 'HS512',
-        });
-        return jwtToken;
+        return `Welcome, ${user.name} Login Sucessful \n Token : ${jwtToken}`;
     }
 };
 exports.UsersService = UsersService;

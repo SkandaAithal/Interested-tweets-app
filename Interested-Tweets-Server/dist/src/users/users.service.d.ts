@@ -8,11 +8,6 @@ export declare class UsersService {
     private jwtService;
     constructor(userRepository: Repository<User>, jwtService: JwtService);
     private hashPassword;
-    register(createUserDto: CreateUserDto): Promise<User | {
-        success: boolean;
-        message: string;
-    }>;
+    register(createUserDto: CreateUserDto): Promise<any>;
     login(loginUserDto: LoginUserDto): Promise<string>;
-    generateJWT(user: User): Promise<string>;
-    generateJWTTwitter(twitterid: string): Promise<string>;
 }

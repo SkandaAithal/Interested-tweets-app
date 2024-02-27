@@ -14,7 +14,7 @@ const oauth_service_1 = require("./oauth.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../users/entities/user.entity");
 const auth_controller_1 = require("./auth.controller");
-const users_module_1 = require("../users/users.module");
+const jwt_1 = require("@nestjs/jwt");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -23,10 +23,9 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             passport_1.PassportModule.register({ defaultStrategy: 'twitter' }),
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
-            users_module_1.UsersModule
         ],
         controllers: [auth_controller_1.oAuthController],
-        providers: [twitter_strategy_1.TwitterStrategy, oauth_service_1.OauthService],
+        providers: [twitter_strategy_1.TwitterStrategy, oauth_service_1.OauthService, jwt_1.JwtService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

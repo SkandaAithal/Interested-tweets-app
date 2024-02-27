@@ -7,16 +7,17 @@ const dotenv = require("dotenv");
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     dotenv.config();
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, { cors: true });
+    app.enableCors();
     app.useGlobalPipes(new common_1.ValidationPipe());
     const config = new swagger_1.DocumentBuilder()
-        .setTitle('Tweets-Back-End API')
-        .setDescription('The Tweets API description')
-        .addTag('Tweets')
+        .setTitle("Tweets-Back-End API")
+        .setDescription("The Tweets API description")
+        .addTag("Tweets")
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
-    swagger_1.SwaggerModule.setup('api', app, document);
-    await app.listen(3000);
+    swagger_1.SwaggerModule.setup("api", app, document);
+    await app.listen(3001);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
