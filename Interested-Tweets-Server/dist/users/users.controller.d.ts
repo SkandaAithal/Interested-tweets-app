@@ -4,7 +4,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
-    register(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User | {
+    register(createUserDto: CreateUserDto): Promise<{
         success: boolean;
         message: string;
     }>;

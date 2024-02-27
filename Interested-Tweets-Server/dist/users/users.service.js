@@ -37,7 +37,13 @@ let UsersService = class UsersService {
                 email,
                 password: hashedPassword,
             });
-            return await this.userRepository.save(user);
+            if (user) {
+                return { success: true, message: 'Account Successfully Created' };
+            }
+            else {
+                return { success: false, message: 'Something went wrong, Try again' };
+            }
+            await this.userRepository.save(user);
         }
         catch (error) {
             if (error.code === '23505' && error.detail.includes('email')) {
