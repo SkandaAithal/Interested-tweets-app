@@ -8,5 +8,5 @@ export interface GlobalStateType {
 }
 export interface GlobalAction {
   type: string;
-  payload: any;
+  payload?: any;
 }

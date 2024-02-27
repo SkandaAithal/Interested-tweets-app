@@ -9,7 +9,7 @@ export function validation(
     if (!inputs.username) {
       errors = { ...errors, nameError: "Invalid username" };
     } else {
-      errors = { ...errors, nameError: "" };
+      delete errors.nameError;
     }
   }
 
@@ -19,7 +19,7 @@ export function validation(
   } else if (!/\S+@\S+\.\S+/.test(inputs.email)) {
     errors = { ...errors, emailError: "Invalid email format" };
   } else {
-    errors.emailError = "";
+    delete errors.emailError;
   }
 
   // Validate password
@@ -31,7 +31,7 @@ export function validation(
       passwordError: "Password must be at least 8 characters long",
     };
   } else {
-    errors.passwordError = "";
+    delete errors.passwordError;
   }
 
   return errors;
