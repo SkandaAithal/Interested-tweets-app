@@ -11,7 +11,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     super({
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: 'http://localhost:3000/auth/callbackUrl',
+      callbackURL: 'http://localhost:3001/auth/callbackUrl',
       passReqToCallback: true,
       profileFields: ['id', 'displayName', 'photos', 'email'],
       scope: ['email'],
