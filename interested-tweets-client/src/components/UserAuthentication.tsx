@@ -47,15 +47,15 @@ export default function UserAuthentication({
         if (isLogin) {
           delete userInputs.username;
 
-          const response = await fetch("http://localhost:3000/users/register", {
-            method: "POST",
-            body: JSON.stringify(userInputs),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          // const response = await fetch("http://localhost:3000/users/register", {
+          //   method: "POST",
+          //   body: JSON.stringify(userInputs),
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          // });
 
-          const data = await response.json();
+          // const data = await response.json();
         }
         setFormErrors(initialFormErrors);
       } catch (error) {
