@@ -56,6 +56,7 @@ export default function UserAuthentication({
           });
 
           const data = await response.json();
+          console.log(data);
         } else {
           const { name, email, password } = userInputs;
 
