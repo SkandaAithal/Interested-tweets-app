@@ -59,7 +59,7 @@ export class UsersService {
       throw new UnauthorizedException('Invalid credentials');
     }
     const jwtToken = await this.generateJWT(user);
-    return `Welcome, ${user.name} Login Sucessful \n Token : ${jwtToken}`;
+    return { success: true, message: 'Logged In Successfully',  'token' : jwtToken};
   }
   async generateJWT(user : User){
     const {name} = user;

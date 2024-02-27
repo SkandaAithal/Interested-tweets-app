@@ -12,7 +12,11 @@ export declare class UsersService {
         success: boolean;
         message: string;
     }>;
-    login(loginUserDto: LoginUserDto): Promise<string>;
+    login(loginUserDto: LoginUserDto): Promise<{
+        success: boolean;
+        message: string;
+        token: string;
+    }>;
     generateJWT(user: User): Promise<string>;
     generateJWTTwitter(twitterid: string): Promise<string>;
 }

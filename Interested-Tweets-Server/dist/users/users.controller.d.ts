@@ -8,5 +8,9 @@ export declare class UsersController {
         success: boolean;
         message: string;
     }>;
-    login(loginUserDto: LoginUserDto): Promise<string>;
+    login(loginUserDto: LoginUserDto): Promise<{
+        success: boolean;
+        message: string;
+        token: string;
+    }>;
 }
