@@ -13,7 +13,7 @@ export interface FormErrorsType {
 }
 
 export interface UserInputsTypes {
-  username?: string;
+  name?: string;
   email: string;
   password: string;
 }
