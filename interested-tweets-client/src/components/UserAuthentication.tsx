@@ -1,37 +1,72 @@
-import { UserAuthenticationProps } from "@/types/authentication";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { HiExclamationCircle } from "react-icons/hi";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import TwitterButtonSignIn from "./TwitterButtonSignIn";
+import { validation } from "@/utilities/validation";
+import {
+  FormErrorsType,
+  UserAuthenticationProps,
+  UserInputsTypes,
+} from "@/types/authentication";
 
 export default function UserAuthentication({
   type,
   isLogin,
-  formErrors,
-  formSubmit,
   setIsLogin,
-  setFormErrors,
 }: UserAuthenticationProps) {
+  const initialFormErrors: FormErrorsType = {
+    nameError: "",
+    emailError: "",
+    passwordError: "",
+  };
+
+  const [formErrors, setFormErrors] =
+    useState<FormErrorsType>(initialFormErrors);
   const [showPassword, setShowPassword] = useState<boolean>(true);
-  const [userInputs, setUserInputs] = useState({
+  const [userInputs, setUserInputs] = useState<UserInputsTypes>({
     username: "",
     email: "",
     password: "",
   });
-  const inputHandler = ({
-    target: { name, value },
-  }: {
-    target: { name: string; value: string };
-  }) => {
-    setUserInputs((prev) => {
-      return { ...prev, [name]: value };
-    });
+
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserInputs((prevInputs) => ({
+      ...prevInputs,
+      [name]: value,
+    }));
+  };
+
+  const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const updatedErrors = validation(type, userInputs, formErrors);
+    setFormErrors(updatedErrors);
+
+    if (Object.values(updatedErrors).every((ele) => ele === "")) {
+      try {
+        if (isLogin) {
+          delete userInputs.username;
+
+          const response = await fetch("http://localhost:3000/users/register", {
+            method: "POST",
+            body: JSON.stringify(userInputs),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+        }
+        setFormErrors(initialFormErrors);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center  min-h-screen">
-      <h1 className="text-3xl mb-4">User {type} </h1>
-
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl mb-4">User {type}</h1>
       <div className="bg-white shadow-lg rounded px-4 py-8 w-full max-w-md">
         {isLogin && (
           <>
@@ -43,13 +78,8 @@ export default function UserAuthentication({
             </div>
           </>
         )}
-
-        <form
-          onSubmit={(e) => {
-            formSubmit(e, type, userInputs, formErrors);
-          }}
-        >
-          {isLogin || (
+        <form onSubmit={formSubmit}>
+          {!isLogin && (
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -145,11 +175,7 @@ export default function UserAuthentication({
                 onClick={() => {
                   setUserInputs({ username: "", email: "", password: "" });
                   setIsLogin(false);
-                  setFormErrors({
-                    nameError: "",
-                    emailError: "",
-                    passwordError: "",
-                  });
+                  setFormErrors(initialFormErrors);
                 }}
                 className="text-blue-500 underline cursor-pointer"
               >

@@ -16,7 +16,7 @@ const GlobalDispatch = createContext<Dispatch<GlobalAction> | undefined>(
 
 export function GlobalContextProvider({ children }: ProviderProps) {
   const initialState: GlobalStateType = {
-    isLoggedin: false,
+    isLoggedin: true,
   };
 
   const [state, dispatch] = useReducer(reducerFunction, initialState);
