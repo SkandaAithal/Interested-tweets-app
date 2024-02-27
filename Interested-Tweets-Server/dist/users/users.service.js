@@ -38,12 +38,12 @@ let UsersService = class UsersService {
                 password: hashedPassword,
             });
             if (user) {
+                await this.userRepository.save(user);
                 return { success: true, message: 'Account Successfully Created' };
             }
             else {
                 return { success: false, message: 'Something went wrong, Try again' };
             }
-            await this.userRepository.save(user);
         }
         catch (error) {
             if (error.code === '23505' && error.detail.includes('email')) {
