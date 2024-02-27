@@ -2,12 +2,12 @@ import { FormErrorsType } from "@/types/authentication";
 
 export function validation(
   type: string,
-  inputs: { username?: string; email: string; password: string },
+  inputs: { name?: string; email: string; password: string },
   errors: FormErrorsType
 ) {
   if (type === "SignUp") {
-    if (!inputs.username) {
-      errors = { ...errors, nameError: "Invalid username" };
+    if (!inputs.name) {
+      errors = { ...errors, nameError: "Invalid Username" };
     } else {
       delete errors.nameError;
     }

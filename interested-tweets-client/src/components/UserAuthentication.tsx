@@ -24,7 +24,7 @@ export default function UserAuthentication({
     useState<FormErrorsType>(initialFormErrors);
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [userInputs, setUserInputs] = useState<UserInputsTypes>({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -45,17 +45,30 @@ export default function UserAuthentication({
     if (Object.values(updatedErrors).every((ele) => ele === "")) {
       try {
         if (isLogin) {
-          delete userInputs.username;
+          delete userInputs.name;
 
-          // const response = await fetch("http://localhost:3000/users/register", {
-          //   method: "POST",
-          //   body: JSON.stringify(userInputs),
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          // });
+          const response = await fetch("http://localhost:3001/users/login", {
+            method: "POST",
+            body: JSON.stringify(userInputs),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-          // const data = await response.json();
+          const data = await response.json();
+        } else {
+          const { name, email, password } = userInputs;
+
+          const response = await fetch("http://localhost:3001/users/register", {
+            method: "POST",
+            body: JSON.stringify({ name, email, password }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+          console.log(data);
         }
         setFormErrors(initialFormErrors);
       } catch (error) {
@@ -83,18 +96,18 @@ export default function UserAuthentication({
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="username"
+                htmlFor="name"
               >
                 User Name:
               </label>
               <input
                 className="shadow-lg appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
-                type="username"
-                name="username"
-                id="username"
-                value={userInputs.username}
+                type="name"
+                name="name"
+                id="name"
+                value={userInputs.name}
                 onChange={inputHandler}
-                placeholder="Username"
+                placeholder="name"
               />
               {formErrors.nameError && (
                 <div className="flex items-center gap-1 text-red-500 m-1">
@@ -173,7 +186,7 @@ export default function UserAuthentication({
               Create your account. &nbsp;
               <span
                 onClick={() => {
-                  setUserInputs({ username: "", email: "", password: "" });
+                  setUserInputs({ name: "", email: "", password: "" });
                   setIsLogin(false);
                   setFormErrors(initialFormErrors);
                 }}
