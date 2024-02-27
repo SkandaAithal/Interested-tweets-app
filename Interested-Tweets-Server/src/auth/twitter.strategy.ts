@@ -28,9 +28,9 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     // try {
     Logger.log(`Twitter UserProfile`, 'Auth');
     const jsonProfile = (profile && profile._json) || {};
-    console.log(profile);
+    // console.log(profile);
     const userProfile = {
-      // userId: profile.id || jsonProfile.id,
+      userId: profile.id || jsonProfile.id,
       twitterid: profile.id || jsonProfile.id,
       name: profile.username || jsonProfile.username,
       email:
@@ -40,11 +40,12 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
       picture: null,
     };
 
-    console.log(userProfile);
+    // console.log(userProfile);
     const oauthResponse = await this.oauth.validateOAuthLogin(
       userProfile,
       // Provider.TWITTER,
     );
+    console.log(oauthResponse)
     //   done(null, {
     //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
     //     jwt: oauthResponse.jwt,

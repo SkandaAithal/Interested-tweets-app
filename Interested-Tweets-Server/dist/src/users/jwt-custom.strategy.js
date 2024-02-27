@@ -12,38 +12,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OauthService = void 0;
-const common_1 = require("@nestjs/common");
+exports.JwtCustomStrategy = void 0;
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("../users/entities/user.entity");
+const passport_1 = require("@nestjs/passport");
+const passport_jwt_1 = require("passport-jwt");
+const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
-const users_service_1 = require("../users/users.service");
-let OauthService = class OauthService {
-    constructor(userRepository, usersService) {
-        this.userRepository = userRepository;
-        this.usersService = usersService;
-    }
-    async validateOAuthLogin(profile) {
-        const { twitterid } = profile;
-        if (await this.userRepository.findOne({ where: { twitterid } })) {
-            return this.usersService.generateJWTTwitter(twitterid);
-        }
-        return this.createOAuthUser(profile);
-    }
-    async createOAuthUser(profile) {
-        const { twitterid, name } = profile;
-        const user = this.userRepository.create({
-            name,
-            twitterid,
+const common_1 = require("@nestjs/common");
+let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+    constructor(userRepo) {
+        super({
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: 'LiftOffSecretKey2012',
         });
-        return await this.userRepository.save(user);
+        this.userRepo = userRepo;
+    }
+    async validate(payload) {
+        const { username } = payload;
+        const name = username;
+        const user = await this.userRepo.findOne({ where: { name } });
+        if (!user) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
+        }
+        return user;
     }
 };
-exports.OauthService = OauthService;
-exports.OauthService = OauthService = __decorate([
+exports.JwtCustomStrategy = JwtCustomStrategy;
+exports.JwtCustomStrategy = JwtCustomStrategy = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        users_service_1.UsersService])
-], OauthService);
-//# sourceMappingURL=oauth.service.js.map
+    __metadata("design:paramtypes", [typeorm_2.Repository])
+], JwtCustomStrategy);
+//# sourceMappingURL=jwt-custom.strategy.js.map
