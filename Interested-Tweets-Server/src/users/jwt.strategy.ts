@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { UnauthorizedException, Injectable } from '@nestjs/common';
 
 @Injectable()
-export class JwtCustomStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,

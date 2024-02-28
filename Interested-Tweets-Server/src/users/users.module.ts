@@ -3,17 +3,15 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { OauthService } from '../auth/oauth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtCustomStrategy } from './jwt-custom.strategy';
-import { AuthModule } from '../auth/auth.module';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: 'LiftOffSecretKey2012',
+      secret: process.env.JWT_SECRET,
       signOptions: {
         algorithm: 'HS512',
         expiresIn: '1d',
@@ -22,10 +20,9 @@ import { AuthModule } from '../auth/auth.module';
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
-    // AuthModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, OauthService, JwtCustomStrategy],
+  providers: [UsersService, JwtStrategy],
   exports:[UsersService]
 })
 export class UsersModule {}

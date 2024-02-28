@@ -12,14 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtCustomStrategy = void 0;
+exports.JwtStrategy = void 0;
 const typeorm_1 = require("@nestjs/typeorm");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
 const common_1 = require("@nestjs/common");
-let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor(userRepo) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -37,10 +37,10 @@ let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportS
         return user;
     }
 };
-exports.JwtCustomStrategy = JwtCustomStrategy;
-exports.JwtCustomStrategy = JwtCustomStrategy = __decorate([
+exports.JwtStrategy = JwtStrategy;
+exports.JwtStrategy = JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
-], JwtCustomStrategy);
+], JwtStrategy);
 //# sourceMappingURL=jwt-custom.strategy.js.map
