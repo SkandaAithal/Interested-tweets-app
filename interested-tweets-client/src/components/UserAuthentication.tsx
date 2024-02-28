@@ -8,6 +8,7 @@ import {
   UserAuthenticationProps,
   UserInputsTypes,
 } from "@/types/authentication";
+import { useGlobalDispatch } from "@/context/globalState";
 
 export default function UserAuthentication({
   type,
@@ -19,7 +20,7 @@ export default function UserAuthentication({
     emailError: "",
     passwordError: "",
   };
-
+  const dispatch = useGlobalDispatch();
   const [formErrors, setFormErrors] =
     useState<FormErrorsType>(initialFormErrors);
   const [showPassword, setShowPassword] = useState<boolean>(true);
@@ -43,8 +44,8 @@ export default function UserAuthentication({
     setFormErrors(updatedErrors);
 
     if (Object.values(updatedErrors).every((ele) => ele === "")) {
-      try {
-        if (isLogin) {
+      if (isLogin) {
+        try {
           delete userInputs.name;
 
           const response = await fetch("http://localhost:3001/users/login", {
@@ -56,12 +57,15 @@ export default function UserAuthentication({
           });
 
           const data = await response.json();
-        } else {
-          const { name, email, password } = userInputs;
-
+          console.log(data);
+          dispatch({ type: "LOGIN" });
+          dispatch({ type: "NOTIFY", payload: data.message });
+        } catch (err) {}
+      } else {
+        try {
           const response = await fetch("http://localhost:3001/users/register", {
             method: "POST",
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify(userInputs),
             headers: {
               "Content-Type": "application/json",
             },
@@ -69,11 +73,14 @@ export default function UserAuthentication({
 
           const data = await response.json();
           console.log(data);
+          dispatch({ type: "NOTIFY", payload: data.message });
+          setUserInputs({ name: "", email: "", password: "" });
+          setIsLogin(true);
+        } catch (err) {
+          console.log(err);
         }
-        setFormErrors(initialFormErrors);
-      } catch (error) {
-        console.error("Error:", error);
       }
+      setFormErrors(initialFormErrors);
     }
   };
 

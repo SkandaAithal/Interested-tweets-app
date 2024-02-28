@@ -2,11 +2,12 @@ import { useGlobalState } from "@/context/globalState";
 import React, { ReactNode } from "react";
 import NavigationBar from "./NavigationBar";
 import Authentication from "./Authentication";
+import Notification from "./Notification";
 interface LayoutProps {
   children: ReactNode;
 }
 export default function Layout({ children }: LayoutProps) {
-  const { isLoggedin } = useGlobalState();
+  const { isLoggedin, isNotification } = useGlobalState();
   return (
     <>
       {isLoggedin ? (
@@ -15,8 +16,11 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </>
       ) : (
-        <Authentication />
+        <>
+          <Authentication />
+        </>
       )}
+      {isNotification && <Notification />}
     </>
   );
 }
