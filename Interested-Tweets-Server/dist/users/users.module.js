@@ -23,7 +23,7 @@ exports.UsersModule = UsersModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             jwt_1.JwtModule.register({
-                secret: process.env.JWT_SECRET,
+                secret: 'LiftOffSecretKey2012',
                 signOptions: {
                     algorithm: 'HS512',
                     expiresIn: '1d',

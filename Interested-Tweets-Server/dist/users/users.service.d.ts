@@ -8,12 +8,8 @@ export declare class UsersService {
     private jwtService;
     constructor(userRepository: Repository<User>, jwtService: JwtService);
     private hashPassword;
-    register(createUserDto: CreateUserDto): Promise<{
-        success: boolean;
-        message: string;
-    }>;
+    register(createUserDto: CreateUserDto): Promise<string>;
     login(loginUserDto: LoginUserDto): Promise<{
-        success: boolean;
         message: string;
         token: string;
     }>;

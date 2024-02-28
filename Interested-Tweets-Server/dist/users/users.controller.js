@@ -25,7 +25,7 @@ let UsersController = class UsersController {
     async register(createUserDto, res) {
         try {
             const result = await this.usersService.register(createUserDto);
-            return res.status(common_1.HttpStatus.OK).json({ success: true, data: result });
+            return res.status(common_1.HttpStatus.OK).json({ success: true, message: result });
         }
         catch (error) {
             return res.status(common_1.HttpStatus.BAD_REQUEST).json({ success: false, message: error.message });

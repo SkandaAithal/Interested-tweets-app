@@ -35,7 +35,7 @@ export class UsersService {
 
     try {
       await this.userRepository.save(user);
-      return { success: true, message: "User registered successfully" };
+      return "User registered successfully" ;
     } catch (error) {
       if (error.code === "23505" && error.detail.includes("email")) {
         throw new BadRequestException("Email already registered, please use different email");
@@ -56,7 +56,6 @@ export class UsersService {
     }
     const jwtToken = await this.generateJWT(user);
     return {
-      success: true,
       message: "Login Successful",
       token: jwtToken,
     };

@@ -18,7 +18,7 @@ export class UsersController {
   async register(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     try {
       const result = await this.usersService.register(createUserDto);
-      return res.status(HttpStatus.OK).json({ success: true, data: result });
+      return res.status(HttpStatus.OK).json({ success: true, message:result });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: error.message });
     }
@@ -32,7 +32,7 @@ export class UsersController {
   async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
     try {
       const result = await this.usersService.login(loginUserDto);
-      return res.status(HttpStatus.OK).json({ success: true, data: result });
+      return res.status(HttpStatus.OK).json({ success: true, data:result});
     } catch (error) {
       return res.status(HttpStatus.UNAUTHORIZED).json({ success: false, message: error.message });
     }
