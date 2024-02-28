@@ -21,8 +21,7 @@ let oAuthController = class oAuthController {
     constructor(oauthService) {
         this.oauthService = oauthService;
     }
-    async twitterLogin(req, res) {
-    }
+    async twitterLogin() { }
     async twitterCallback(req, res) {
     }
 };
@@ -34,10 +33,8 @@ __decorate([
     (0, swagger_1.ApiBadRequestResponse)({
         description: 'Bad request. Please check your input data.',
     }),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Request, Response]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], oAuthController.prototype, "twitterLogin", null);
 __decorate([
@@ -50,7 +47,7 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Request, Response]),
+    __metadata("design:paramtypes", [Object, Response]),
     __metadata("design:returntype", Promise)
 ], oAuthController.prototype, "twitterCallback", null);
 exports.oAuthController = oAuthController = __decorate([

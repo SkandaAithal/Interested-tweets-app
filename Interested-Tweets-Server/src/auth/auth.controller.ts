@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Req, Res, UseGuards} from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -7,7 +7,7 @@ import {
 } from '@nestjs/swagger';
 import { TwitterGuard } from 'src/users/twitter-guard';
 import { OauthService } from 'src/auth/oauth.service';
-import AuthenticatedRequest from './authenticated-request.interface';
+import { Response , Request } from 'express';
 
 @ApiTags('auth')
 @ApiBearerAuth() // Adding bearer authentication to all endpoints in this controller
@@ -22,8 +22,7 @@ export class oAuthController {
   @ApiBadRequestResponse({
     description: 'Bad request. Please check your input data.',
   })
-  async twitterLogin(@Req() req: Request, @Res() res: Response) {
-  }
+  async twitterLogin() {}
 
   @Get('callbackUrl')
   @UseGuards(TwitterGuard)
@@ -32,7 +31,13 @@ export class oAuthController {
     description: 'Bad request. Please check your input data.',
   })
   async twitterCallback(@Req() req: Request, @Res() res: Response) {
-    // Handle Twitter callback URL
-    // this.oauthService.twitterCallback(req, res);
+    try {
+      const { user, jwt } = req.user as { user: any, jwt: string };
+      res.json({ jwt });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
   }
 }
+}
+

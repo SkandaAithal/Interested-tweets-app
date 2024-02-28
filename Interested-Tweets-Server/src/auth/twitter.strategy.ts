@@ -25,7 +25,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     profile: any,
     done: VerifiedCallback,
   ) {
-    // try {
+    try {
     Logger.log(`Twitter UserProfile`, 'Auth');
     const jsonProfile = (profile && profile._json) || {};
     // console.log(profile);
@@ -43,15 +43,23 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     // console.log(userProfile);
     const oauthResponse = await this.oauth.validateOAuthLogin(
       userProfile,
-      // Provider.TWITTER,
+      'twitter',
     );
-    console.log(oauthResponse)
-    //   done(null, {
-    //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
-    //     jwt: oauthResponse.jwt,
-    //   });
-    // }
-    // catch(err) {
-    //   done(err, false);
+    // console.log(oauthResponse)
+    // console.log({user: oauthResponse.user,
+    //   jwt: oauthResponse.jwt})
+    return{
+        user: oauthResponse.user,
+        jwt: oauthResponse.jwt}
+      // done(null, {
+      //   user: oauthResponse.user,
+      //   jwt: oauthResponse.jwt,
+        // ...JSON.parse(JSON.stringify(oauthResponse.user)),
+        // jwt: oauthResponse.jwt,
+      // });
+    }
+    catch(err) {
+      done(err, false);
   }
+}
 }
