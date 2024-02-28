@@ -60,9 +60,7 @@ export default function UserAuthentication({
           console.log(data);
           dispatch({ type: "LOGIN" });
           dispatch({ type: "NOTIFY", payload: data.message });
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       } else {
         try {
           const response = await fetch("http://localhost:3001/users/register", {
