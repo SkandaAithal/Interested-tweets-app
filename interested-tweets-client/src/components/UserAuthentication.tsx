@@ -58,7 +58,10 @@ export default function UserAuthentication({
 
           const data = await response.json();
           console.log(data);
-          dispatch({ type: "LOGIN" });
+          if (data.success) {
+            dispatch({ type: "LOGIN" });
+            dispatch({ type: "NOTIFY", payload: data.message });
+          }
           dispatch({ type: "NOTIFY", payload: data.message });
         } catch (err) {}
       } else {
@@ -73,12 +76,13 @@ export default function UserAuthentication({
 
           const data = await response.json();
           console.log(data);
+          if (data.success) {
+            dispatch({ type: "NOTIFY", payload: data.message });
+            setUserInputs({ name: "", email: "", password: "" });
+            setIsLogin(true);
+          }
           dispatch({ type: "NOTIFY", payload: data.message });
-          setUserInputs({ name: "", email: "", password: "" });
-          setIsLogin(true);
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       }
       setFormErrors(initialFormErrors);
     }
