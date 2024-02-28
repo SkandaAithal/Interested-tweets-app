@@ -22,11 +22,23 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    async register(createUserDto) {
-        return await this.usersService.register(createUserDto);
+    async register(createUserDto, res) {
+        try {
+            const result = await this.usersService.register(createUserDto);
+            return res.status(common_1.HttpStatus.OK).json({ success: true, data: result });
+        }
+        catch (error) {
+            return res.status(common_1.HttpStatus.BAD_REQUEST).json({ success: false, message: error.message });
+        }
     }
-    async login(loginUserDto) {
-        return await this.usersService.login(loginUserDto);
+    async login(loginUserDto, res) {
+        try {
+            const result = await this.usersService.login(loginUserDto);
+            return res.status(common_1.HttpStatus.OK).json({ success: true, data: result });
+        }
+        catch (error) {
+            return res.status(common_1.HttpStatus.UNAUTHORIZED).json({ success: false, message: error.message });
+        }
     }
 };
 exports.UsersController = UsersController;
@@ -37,8 +49,9 @@ __decorate([
         description: 'Bad request. Please check your input data.',
     }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "register", null);
 __decorate([
@@ -48,8 +61,9 @@ __decorate([
         description: 'Bad request. Please check your input data.',
     }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
+    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
 exports.UsersController = UsersController = __decorate([

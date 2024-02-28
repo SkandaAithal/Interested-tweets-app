@@ -1,4 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiTags, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,8 +15,13 @@ export class UsersController {
   @ApiBadRequestResponse({
     description: 'Bad request. Please check your input data.',
   })
-  async register(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.register(createUserDto);
+  async register(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    try {
+      const result = await this.usersService.register(createUserDto);
+      return res.status(HttpStatus.OK).json({ success: true, data: result });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: error.message });
+    }
   }
 
   @Post('login')
@@ -23,7 +29,12 @@ export class UsersController {
   @ApiBadRequestResponse({
     description: 'Bad request. Please check your input data.',
   })
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return await this.usersService.login(loginUserDto);
+  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
+    try {
+      const result = await this.usersService.login(loginUserDto);
+      return res.status(HttpStatus.OK).json({ success: true, data: result });
+    } catch (error) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({ success: false, message: error.message });
+    }
   }
 }
