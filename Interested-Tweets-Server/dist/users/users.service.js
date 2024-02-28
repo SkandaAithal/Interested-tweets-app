@@ -42,7 +42,7 @@ let UsersService = class UsersService {
         }
         catch (error) {
             if (error.code === "23505" && error.detail.includes("email")) {
-                return { success: false, message: "Email address is already in use" };
+                throw new common_1.BadRequestException("Email already registered, please use different email");
             }
             else {
                 throw new common_1.BadRequestException("Registration failed");
