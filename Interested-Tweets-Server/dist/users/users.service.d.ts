@@ -1,8 +1,8 @@
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
-import { LoginUserDto } from './dto/login-user.dto';
-import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from "./dto/create-user.dto";
+import { User } from "./entities/user.entity";
+import { Repository } from "typeorm";
+import { LoginUserDto } from "./dto/login-user.dto";
+import { JwtService } from "@nestjs/jwt";
 export declare class UsersService {
     private userRepository;
     private jwtService;

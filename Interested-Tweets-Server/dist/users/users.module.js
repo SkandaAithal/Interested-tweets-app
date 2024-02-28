@@ -12,10 +12,9 @@ const users_service_1 = require("./users.service");
 const users_controller_1 = require("./users.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
-const oauth_service_1 = require("../auth/oauth.service");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
-const jwt_custom_strategy_1 = require("./jwt-custom.strategy");
+const jwt_strategy_1 = require("./jwt.strategy");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
@@ -24,7 +23,7 @@ exports.UsersModule = UsersModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             jwt_1.JwtModule.register({
-                secret: 'LiftOffSecretKey2012',
+                secret: process.env.JWT_SECRET,
                 signOptions: {
                     algorithm: 'HS512',
                     expiresIn: '1d',
@@ -35,7 +34,7 @@ exports.UsersModule = UsersModule = __decorate([
             }),
         ],
         controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService, oauth_service_1.OauthService, jwt_custom_strategy_1.JwtCustomStrategy],
+        providers: [users_service_1.UsersService, jwt_strategy_1.JwtStrategy],
         exports: [users_service_1.UsersService]
     })
 ], UsersModule);

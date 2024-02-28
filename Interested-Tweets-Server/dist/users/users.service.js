@@ -29,57 +29,55 @@ let UsersService = class UsersService {
         return bcrypt.hash(password, saltRounds);
     }
     async register(createUserDto) {
+        const { name, email, password } = createUserDto;
+        const hashedPassword = await this.hashPassword(password);
+        const user = this.userRepository.create({
+            name,
+            email,
+            password: hashedPassword,
+        });
         try {
-            const { name, email, password } = createUserDto;
-            const hashedPassword = await this.hashPassword(password);
-            const user = this.userRepository.create({
-                name,
-                email,
-                password: hashedPassword,
-            });
-            if (user) {
-                await this.userRepository.save(user);
-                return { success: true, message: 'Account Successfully Created' };
-            }
-            else {
-                return { success: false, message: 'Something went wrong, Try again' };
-            }
+            await this.userRepository.save(user);
+            return { success: true, message: "User registered successfully" };
         }
         catch (error) {
-            if (error.code === '23505' && error.detail.includes('email')) {
-                return { success: false, message: 'Email address is already in use' };
+            if (error.code === "23505" && error.detail.includes("email")) {
+                return { success: false, message: "Email address is already in use" };
             }
             else {
-                return { success: false, message: 'Internal server error' };
+                throw new common_1.BadRequestException("Registration failed");
             }
         }
     }
     async login(loginUserDto) {
         if (!loginUserDto || !loginUserDto.email || !loginUserDto.password) {
-            throw new common_1.BadRequestException('Invalid authentication credentials');
+            throw new common_1.BadRequestException("Invalid authentication credentials");
         }
         const { name, email, password } = loginUserDto;
         const user = await this.userRepository.findOne({ where: { email } });
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            throw new common_1.UnauthorizedException("Invalid credentials");
         }
         const jwtToken = await this.generateJWT(user);
-        return { success: true, message: 'Logged In Successfully', token: jwtToken };
+        return {
+            success: true,
+            message: "Login Successful",
+            token: jwtToken,
+        };
     }
     async generateJWT(user) {
-        const { name } = user;
-        const jwtPayload = { name };
+        const jwtPayload = { id: user.id, name: user.name };
         const jwtToken = await this.jwtService.signAsync(jwtPayload, {
-            expiresIn: '1d',
-            algorithm: 'HS512',
+            expiresIn: "1d",
+            algorithm: "HS512",
         });
         return jwtToken;
     }
     async generateJWTTwitter(twitterid) {
         const jwtPayload = { twitterid };
         const jwtToken = await this.jwtService.signAsync(jwtPayload, {
-            expiresIn: '1d',
-            algorithm: 'HS512',
+            expiresIn: "1d",
+            algorithm: "HS512",
         });
         return jwtToken;
     }
