@@ -1,13 +1,20 @@
+import { UsersService } from 'src/users/users.service';
 import { OauthService } from './oauth.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { InjectRepository } from '@nestjs/typeorm';
 import { VerifiedCallback } from 'passport-jwt';
 import { Profile, Strategy } from 'passport-twitter';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
 // import { Strategy } from 'passport-twitter-oauth2';
 
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
-  constructor(private oauth: OauthService) {
+  constructor(private oauth: OauthService,
+    @InjectRepository(User)
+    private userRepository:Repository<User>,
+    private usersService:UsersService) {
     super({
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
@@ -39,15 +46,14 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
       displayName: profile.displayName,
       picture: null,
     };
-
-    console.log(userProfile);
+    // console.log(userProfile);
     const oauthResponse = await this.oauth.validateOAuthLogin(
       userProfile,
       'twitter',
     );
     console.log(oauthResponse)
-    // console.log({user: oauthResponse.user,
-    //   jwt: oauthResponse.jwt})
+    console.log({user: oauthResponse.user,
+      jwt: oauthResponse.jwt})
     return{
         user: oauthResponse.user,
         jwt: oauthResponse.jwt}

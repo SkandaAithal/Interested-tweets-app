@@ -33,6 +33,7 @@ let OauthService = class OauthService {
                     name,
                     twitterid,
                 });
+                await this.userRepository.save(existingUser);
             }
             const jwt = await this.usersService.generateJWTTwitter(twitterid);
             return { jwt, user: existingUser };

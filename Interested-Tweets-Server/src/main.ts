@@ -14,8 +14,11 @@ declare global {
 
 async function bootstrap() {
   dotenv.config();
-  const app = await NestFactory.create(AppModule, { cors: true });
-  app.enableCors();
+  const app = await NestFactory.create(AppModule,{ cors: true });//
+//   app.enableCors({
+//     origin: "http://localhost:3000",
+//     credentials: true,
+// });
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle("Tweets-Back-End API")
