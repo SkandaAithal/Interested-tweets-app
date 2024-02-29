@@ -14,20 +14,20 @@ const oauth_service_1 = require("./oauth.service");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_twitter_1 = require("passport-twitter");
-let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrategy)(passport_twitter_1.Strategy, 'twitter') {
+let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrategy)(passport_twitter_1.Strategy, "twitter") {
     constructor(oauth) {
         super({
             consumerKey: process.env.TWITTER_CONSUMER_KEY,
             consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-            callbackURL: 'http://localhost:3001/auth/callbackUrl',
+            callbackURL: "http://localhost:3001/auth/callbackUrl",
             passReqToCallback: true,
-            profileFields: ['id', 'displayName', 'photos', 'email'],
-            scope: ['email'],
+            profileFields: ["id", "displayName", "photos", "email"],
+            scope: ["email"],
         });
         this.oauth = oauth;
     }
     async validate(req, accessToken, refreshToken, profile, done) {
-        common_1.Logger.log(`Twitter UserProfile`, 'Auth');
+        common_1.Logger.log(`Twitter UserProfile`, "Auth");
         const jsonProfile = (profile && profile._json) || {};
         const userProfile = {
             userId: profile.id || jsonProfile.id,

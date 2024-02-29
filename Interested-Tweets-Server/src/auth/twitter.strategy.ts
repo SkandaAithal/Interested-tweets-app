@@ -1,20 +1,20 @@
-import { OauthService } from './oauth.service';
-import { Injectable, Logger } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { VerifiedCallback } from 'passport-jwt';
-import { Profile, Strategy } from 'passport-twitter';
+import { OauthService } from "./oauth.service";
+import { Injectable, Logger } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { VerifiedCallback } from "passport-jwt";
+import { Profile, Strategy } from "passport-twitter";
 // import { Strategy } from 'passport-twitter-oauth2';
 
 @Injectable()
-export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
+export class TwitterStrategy extends PassportStrategy(Strategy, "twitter") {
   constructor(private oauth: OauthService) {
     super({
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: 'http://localhost:3001/auth/callbackUrl',
+      callbackURL: "http://localhost:3001/auth/callbackUrl",
       passReqToCallback: true,
-      profileFields: ['id', 'displayName', 'photos', 'email'],
-      scope: ['email'],
+      profileFields: ["id", "displayName", "photos", "email"],
+      scope: ["email"],
     });
   }
 
@@ -23,10 +23,10 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     accessToken: string,
     refreshToken: string,
     profile: any,
-    done: VerifiedCallback,
+    done: VerifiedCallback
   ) {
     // try {
-    Logger.log(`Twitter UserProfile`, 'Auth');
+    Logger.log(`Twitter UserProfile`, "Auth");
     const jsonProfile = (profile && profile._json) || {};
     // console.log(profile);
     const userProfile = {
@@ -42,10 +42,10 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
 
     // console.log(userProfile);
     const oauthResponse = await this.oauth.validateOAuthLogin(
-      userProfile,
+      userProfile
       // Provider.TWITTER,
     );
-    console.log(oauthResponse)
+    console.log(oauthResponse);
     //   done(null, {
     //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
     //     jwt: oauthResponse.jwt,

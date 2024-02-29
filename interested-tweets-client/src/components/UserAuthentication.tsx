@@ -55,14 +55,15 @@ export default function UserAuthentication({
               "Content-Type": "application/json",
             },
           });
-
           const data = await response.json();
-          console.log(data);
+
           if (data.success) {
             dispatch({ type: "LOGIN" });
+            localStorage.setItem("token", `Bearer ${data.data.token}`);
+            dispatch({ type: "NOTIFY", payload: data.data.message });
+          } else {
             dispatch({ type: "NOTIFY", payload: data.message });
           }
-          dispatch({ type: "NOTIFY", payload: data.message });
         } catch (err) {}
       } else {
         try {
@@ -80,8 +81,9 @@ export default function UserAuthentication({
             dispatch({ type: "NOTIFY", payload: data.message });
             setUserInputs({ name: "", email: "", password: "" });
             setIsLogin(true);
+          } else {
+            dispatch({ type: "NOTIFY", payload: data.message });
           }
-          dispatch({ type: "NOTIFY", payload: data.message });
         } catch (err) {}
       }
       setFormErrors(initialFormErrors);
