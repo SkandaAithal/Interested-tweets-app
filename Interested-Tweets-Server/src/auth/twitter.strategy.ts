@@ -45,15 +45,6 @@ export class TwitterStrategy extends PassportStrategy(Strategy, "twitter") {
         userProfile,
         "twitter"
       );
-      console.log(oauthResponse);
-      //   done(null, {
-      //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
-      //     jwt: oauthResponse.jwt,
-      //   });
-      // }
-      // catch(err) {
-      //   done(err, false);
-
       // console.log(oauthResponse)
       // console.log({user: oauthResponse.user,
       //   jwt: oauthResponse.jwt})
