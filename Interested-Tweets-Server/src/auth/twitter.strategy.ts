@@ -25,33 +25,50 @@ export class TwitterStrategy extends PassportStrategy(Strategy, "twitter") {
     profile: any,
     done: VerifiedCallback
   ) {
-    // try {
-    Logger.log(`Twitter UserProfile`, "Auth");
-    const jsonProfile = (profile && profile._json) || {};
-    // console.log(profile);
-    const userProfile = {
-      userId: profile.id || jsonProfile.id,
-      twitterid: profile.id || jsonProfile.id,
-      name: profile.username || jsonProfile.username,
-      email:
-        (profile.emails && profile.emails[0].value) ||
-        (jsonProfile.emails && jsonProfile.emails[0].value),
-      displayName: profile.displayName,
-      picture: null,
-    };
+    try {
+      Logger.log(`Twitter UserProfile`, "Auth");
+      const jsonProfile = (profile && profile._json) || {};
+      // console.log(profile);
+      const userProfile = {
+        userId: profile.id || jsonProfile.id,
+        twitterid: profile.id || jsonProfile.id,
+        name: profile.username || jsonProfile.username,
+        email:
+          (profile.emails && profile.emails[0].value) ||
+          (jsonProfile.emails && jsonProfile.emails[0].value),
+        displayName: profile.displayName,
+        picture: null,
+      };
 
-    // console.log(userProfile);
-    const oauthResponse = await this.oauth.validateOAuthLogin(
-      userProfile
-      // Provider.TWITTER,
-    );
-    console.log(oauthResponse);
-    //   done(null, {
-    //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
-    //     jwt: oauthResponse.jwt,
-    //   });
-    // }
-    // catch(err) {
-    //   done(err, false);
+      // console.log(userProfile);
+      const oauthResponse = await this.oauth.validateOAuthLogin(
+        userProfile,
+        "twitter"
+      );
+      console.log(oauthResponse);
+      //   done(null, {
+      //     ...JSON.parse(JSON.stringify(oauthResponse.user)),
+      //     jwt: oauthResponse.jwt,
+      //   });
+      // }
+      // catch(err) {
+      //   done(err, false);
+
+      // console.log(oauthResponse)
+      // console.log({user: oauthResponse.user,
+      //   jwt: oauthResponse.jwt})
+      return {
+        user: oauthResponse.user,
+        jwt: oauthResponse.jwt,
+      };
+      // done(null, {
+      //   user: oauthResponse.user,
+      //   jwt: oauthResponse.jwt,
+      // ...JSON.parse(JSON.stringify(oauthResponse.user)),
+      // jwt: oauthResponse.jwt,
+      // });
+    } catch (err) {
+      done(err, false);
+    }
   }
 }

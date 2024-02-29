@@ -5,6 +5,9 @@ export declare class OauthService {
     private userRepository;
     private readonly usersService;
     constructor(userRepository: Repository<User>, usersService: UsersService);
-    validateOAuthLogin(profile: any): Promise<string | User>;
-    createOAuthUser(profile: any): Promise<User>;
+    private readonly JWT_SECRET_KEY;
+    validateOAuthLogin(userProfile: any, provider: string): Promise<{
+        jwt: string;
+        user: User;
+    }>;
 }

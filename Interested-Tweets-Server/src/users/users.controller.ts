@@ -37,4 +37,10 @@ export class UsersController {
       return res.status(HttpStatus.UNAUTHORIZED).json({ success: false, message: error.message });
     }
   }
+
+  // @Post('token')
+
+  // async generateJwtTwitter(@Body() twitterid:string){
+  //   return this.usersService.generateJWTTwitter(twitterid);
+  // }
 }

@@ -27,6 +27,7 @@ let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrat
         this.oauth = oauth;
     }
     async validate(req, accessToken, refreshToken, profile, done) {
+<<<<<<< HEAD
         common_1.Logger.log(`Twitter UserProfile`, "Auth");
         const jsonProfile = (profile && profile._json) || {};
         const userProfile = {
@@ -40,6 +41,29 @@ let TwitterStrategy = class TwitterStrategy extends (0, passport_1.PassportStrat
         };
         const oauthResponse = await this.oauth.validateOAuthLogin(userProfile);
         console.log(oauthResponse);
+=======
+        try {
+            common_1.Logger.log(`Twitter UserProfile`, 'Auth');
+            const jsonProfile = (profile && profile._json) || {};
+            const userProfile = {
+                userId: profile.id || jsonProfile.id,
+                twitterid: profile.id || jsonProfile.id,
+                name: profile.username || jsonProfile.username,
+                email: (profile.emails && profile.emails[0].value) ||
+                    (jsonProfile.emails && jsonProfile.emails[0].value),
+                displayName: profile.displayName,
+                picture: null,
+            };
+            const oauthResponse = await this.oauth.validateOAuthLogin(userProfile, 'twitter');
+            return {
+                user: oauthResponse.user,
+                jwt: oauthResponse.jwt
+            };
+        }
+        catch (err) {
+            done(err, false);
+        }
+>>>>>>> edead60061560cbe812e3930a53e6a91d14b854a
     }
 };
 exports.TwitterStrategy = TwitterStrategy;

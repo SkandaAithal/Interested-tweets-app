@@ -22,21 +22,24 @@ let OauthService = class OauthService {
     constructor(userRepository, usersService) {
         this.userRepository = userRepository;
         this.usersService = usersService;
+        this.JWT_SECRET_KEY = "LiftOffSecretKey2012";
     }
-    async validateOAuthLogin(profile) {
-        const { twitterid } = profile;
-        if (await this.userRepository.findOne({ where: { twitterid } })) {
-            return this.usersService.generateJWTTwitter(twitterid);
+    async validateOAuthLogin(userProfile, provider) {
+        try {
+            const { twitterid, name } = userProfile;
+            let existingUser = await this.userRepository.findOne({ where: { twitterid } });
+            if (!existingUser) {
+                existingUser = this.userRepository.create({
+                    name,
+                    twitterid,
+                });
+            }
+            const jwt = await this.usersService.generateJWTTwitter(twitterid);
+            return { jwt, user: existingUser };
         }
-        return this.createOAuthUser(profile);
-    }
-    async createOAuthUser(profile) {
-        const { twitterid, name } = profile;
-        const user = this.userRepository.create({
-            name,
-            twitterid,
-        });
-        return await this.userRepository.save(user);
+        catch (err) {
+            throw new common_1.InternalServerErrorException("validateOAuthLogin", err.message);
+        }
     }
 };
 exports.OauthService = OauthService;
