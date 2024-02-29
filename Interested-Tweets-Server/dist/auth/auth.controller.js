@@ -23,6 +23,14 @@ let oAuthController = class oAuthController {
     }
     async twitterLogin() { }
     async twitterCallback(req, res) {
+        try {
+            const { user, jwt } = req.user;
+            res.redirect('http://localhost:3000');
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 };
 exports.oAuthController = oAuthController;
@@ -47,7 +55,7 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Response]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], oAuthController.prototype, "twitterCallback", null);
 exports.oAuthController = oAuthController = __decorate([

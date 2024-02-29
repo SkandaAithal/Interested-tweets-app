@@ -33,7 +33,8 @@ export class oAuthController {
   async twitterCallback(@Req() req: Request, @Res() res: Response) {
     try {
       const { user, jwt } = req.user as { user: any, jwt: string };
-      res.json({ jwt });
+      // res.json({ jwt });
+      res.redirect('http://localhost:3000')
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
