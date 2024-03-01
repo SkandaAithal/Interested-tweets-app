@@ -9,7 +9,7 @@ import {
   UserInputsTypes,
 } from "@/types/authentication";
 import { useGlobalDispatch } from "@/context/globalState";
-import Cookie from "js-cookie";
+import Cookies from "universal-cookie";
 export default function UserAuthentication({
   type,
   isLogin,
@@ -89,15 +89,18 @@ export default function UserAuthentication({
       setFormErrors(initialFormErrors);
     }
   };
-  const jwtToken = Cookie.get("jwtToken");
-  useEffect(() => {
-    const getCookies = () => {
-      const cookies = document.cookie;
-      console.log(cookies);
-    };
 
-    getCookies();
+  useEffect(() => {
+    const cookie = new Cookies();
+    const jwt = cookie.get("jwtToken");
+    if (jwt) {
+      localStorage.setItem("token", jwt);
+      dispatch({ type: "LOGIN" });
+      localStorage.setItem("token", `Bearer ${jwt}`);
+      dispatch({ type: "NOTIFY", payload: "Login Successfull" });
+    }
   }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-3xl mb-4">User {type}</h1>

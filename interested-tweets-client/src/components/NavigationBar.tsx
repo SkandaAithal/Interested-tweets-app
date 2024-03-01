@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { FaTwitter } from "react-icons/fa";
 import { useGlobalDispatch } from "@/context/globalState";
+import Cookies from "universal-cookie";
 
 export default function NavigationBar() {
   const dispatch = useGlobalDispatch();
@@ -22,6 +23,9 @@ export default function NavigationBar() {
         <button
           onClick={() => {
             dispatch({ type: "LOGOUT" });
+            const cookie = new Cookies();
+            cookie.remove("jwtToken");
+            localStorage.removeItem("token");
           }}
           className="bg-slate-500 text-white bg-opacity-40 backdrop-blur-lg backdrop-filter hover:backdrop-blur-xl hover:bg-opacity-60 flex justify-between gap-5 m-3 items-center py-2 px-4 list-none hover:scale-105 transform transition-transform rounded-md"
         >
