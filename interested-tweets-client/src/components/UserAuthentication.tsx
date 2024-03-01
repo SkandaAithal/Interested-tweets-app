@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { HiExclamationCircle } from "react-icons/hi";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import TwitterButtonSignIn from "./TwitterButtonSignIn";
@@ -9,7 +9,7 @@ import {
   UserInputsTypes,
 } from "@/types/authentication";
 import { useGlobalDispatch } from "@/context/globalState";
-
+import Cookie from "js-cookie";
 export default function UserAuthentication({
   type,
   isLogin,
@@ -89,7 +89,15 @@ export default function UserAuthentication({
       setFormErrors(initialFormErrors);
     }
   };
+  const jwtToken = Cookie.get("jwtToken");
+  useEffect(() => {
+    const getCookies = () => {
+      const cookies = document.cookie;
+      console.log(cookies);
+    };
 
+    getCookies();
+  }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-3xl mb-4">User {type}</h1>

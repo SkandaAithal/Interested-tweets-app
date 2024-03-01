@@ -4,7 +4,13 @@ import {
   GlobalStateType,
   ProviderProps,
 } from "@/types/globalStateTypes";
-import React, { createContext, Dispatch, useContext, useReducer } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 
 const GlobalStateContext = createContext<GlobalStateType | undefined>(
   undefined
@@ -16,13 +22,19 @@ const GlobalDispatch = createContext<Dispatch<GlobalAction> | undefined>(
 
 export function GlobalContextProvider({ children }: ProviderProps) {
   const initialState: GlobalStateType = {
-    isLoggedin: true,
+    isLoggedin: false,
     isNotification: false,
     notifyMessage: "",
   };
 
   const [state, dispatch] = useReducer(reducerFunction, initialState);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch({ type: "LOGIN" });
+    }
+  }, []);
   return (
     <GlobalStateContext.Provider value={state}>
       <GlobalDispatch.Provider value={dispatch}>
