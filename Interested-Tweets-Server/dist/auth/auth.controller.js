@@ -25,7 +25,7 @@ let oAuthController = class oAuthController {
     async twitterCallback(req, res) {
         try {
             const { user, jwt } = req.user;
-            res.cookie('jwtToken', jwt, { httpOnly: true });
+            res.cookie('jwtToken', jwt);
             res.redirect('http://localhost:3000');
         }
         catch (error) {
