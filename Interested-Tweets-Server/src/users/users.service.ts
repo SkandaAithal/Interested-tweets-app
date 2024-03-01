@@ -6,7 +6,7 @@ import {
 import { CreateUserDto } from "./dto/create-user.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
-import { Repository } from "typeorm";
+import { EntityManager, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { JwtService } from "@nestjs/jwt";
@@ -15,7 +15,7 @@ import { JwtService } from "@nestjs/jwt";
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,private readonly manager: EntityManager
   ) {}
 
   private async hashPassword(password: string): Promise<string> {
@@ -76,4 +76,12 @@ export class UsersService {
     });
     return jwtToken;
   }
+
+  async getUserById(id: number): Promise<User> {
+    return await this.manager.findOne(User, {
+      where: { id },
+      relations: ['interests'],
+    });
+  }
+  
 }

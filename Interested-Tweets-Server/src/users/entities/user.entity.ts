@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Interest } from '../../interests/entities/interests.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -22,6 +24,9 @@ export class User extends BaseEntity {
   twitterid: string;
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
+
+  @OneToMany(() => Interest, (interest) => interest.user)
+  interests: Interest[];
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

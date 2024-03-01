@@ -4,6 +4,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { InterestsModule } from './interests/interests.module';
 import * as session from 'express-session';
 
 @Module({
@@ -20,6 +21,7 @@ import * as session from 'express-session';
       synchronize: true,
     }),
     AuthModule,
+    InterestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
