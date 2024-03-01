@@ -40,8 +40,13 @@ export class oAuthController {
     try {
       const { user, jwt } = req.user as { user: any; jwt: string };
       // res.json({ jwt });
+<<<<<<< HEAD
       res.cookie("jwtToken", jwt);
       res.redirect("http://localhost:3000");
+=======
+      res.cookie('jwtToken',jwt);//,{httpOnly:true}
+      res.redirect('http://localhost:3000')
+>>>>>>> e4ef4fff07bf3a8221ae13bc5a659fd58e3c218b
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal server error" });

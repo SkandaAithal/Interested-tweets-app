@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, Res, Get, Query, Param } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiTags, ApiOkResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -38,9 +38,9 @@ export class UsersController {
     }
   }
 
-  // @Post('token')
+  @Get(':id')
+  async getUserById(@Param('id') id: number) {
+    return await this.usersService.getUserById(id);
+  }
 
-  // async generateJwtTwitter(@Body() twitterid:string){
-  //   return this.usersService.generateJWTTwitter(twitterid);
-  // }
 }
