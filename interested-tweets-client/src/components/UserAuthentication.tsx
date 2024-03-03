@@ -94,7 +94,6 @@ export default function UserAuthentication({
     const cookie = new Cookies();
     const jwt = cookie.get("jwtToken");
     if (jwt) {
-      localStorage.setItem("token", jwt);
       dispatch({ type: "LOGIN" });
       localStorage.setItem("token", `Bearer ${jwt}`);
       dispatch({ type: "NOTIFY", payload: "Login Successfull" });
