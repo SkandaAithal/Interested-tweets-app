@@ -49,4 +49,30 @@ export class oAuthController {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  @Get("GoogleLogin")
+  @UseGuards(GoogleGuard)
+  @ApiOkResponse({ description: "Redirects user to Google login page" })
+  @ApiBadRequestResponse({
+    description: "Bad request. Please check your input data.",
+  })
+  async googleLogin() {}
+
+  @Get("GoogleCallBack")
+  @UseGuards(GoogleGuard)
+  @ApiOkResponse({ description: "Handles Twitter callback URL" })
+  @ApiBadRequestResponse({
+    description: "Bad request. Please check your input data.",
+  })
+  async googleCallback(@Req() req: Request, @Res() res: Response) {
+    try {
+      const { user, jwt } = req.user as { user: any; jwt: string };
+      // res.json({ jwt });
+      res.cookie("jwtToken", jwt);
+      res.redirect("http://localhost:3000");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
