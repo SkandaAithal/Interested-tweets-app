@@ -1,0 +1,49 @@
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Profile, Strategy, VerifyCallback } from "passport-google-oauth20";
+import { PassportStrategy } from "@nestjs/passport";
+import { OauthService } from "./oauth.service";
+// import { ConfigService } from '@nestjs/config';
+// import { AuthService } from '../auth.service';
+
+@Injectable()
+export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
+  constructor(private oauth: OauthService) {
+    super({
+      clientID: process.env.Google_Client_ID,
+      clientSecret: process.env.Google_Client_Secret,
+      callbackURL: "http://localhost:3001/auth/GoogleCallBack",
+      scope: ["email", "profile"],
+    });
+  }
+
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: Profile,
+    done: VerifyCallback
+  ) {
+    // console.log(profile);
+    try {
+        Logger.log(`Google UserProfile`, 'Auth');
+  
+        // Extract necessary attributes from the profile
+        const userProfile = {
+          googleid: profile.id,
+          name: profile.displayName,
+          email: profile.emails ? profile.emails[0].value : null,
+          picture: profile.photos ? profile.photos[0].value : null,
+        };
+  
+        // Pass the extracted profile to the OAuth service for validation
+        const oauthResponse = await this.oauth.validateGoogleOAuth(userProfile, 'google');
+        // console.log(oauthResponse)
+        // Return user and JWT
+        return {
+            user: oauthResponse.user,
+            jwt: oauthResponse.jwt,
+          };
+      } catch (err) {
+        done(err, false);
+      }
+  }
+}
