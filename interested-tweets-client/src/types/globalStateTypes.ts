@@ -7,6 +7,15 @@ export interface GlobalStateType {
   isLoggedin?: boolean;
   isNotification: boolean;
   notifyMessage: string;
+  allInterests: string[];
+  userInterests: interetedDataType[] | [];
+  searchInterests: string[];
+  interestLengthFlag: boolean;
+}
+
+export interface interetedDataType {
+  value: string;
+  tag: string;
 }
 export interface GlobalAction {
   type: string;

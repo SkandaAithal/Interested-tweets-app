@@ -4,6 +4,7 @@ import {
   GlobalStateType,
   ProviderProps,
 } from "@/types/globalStateTypes";
+import allInterests from "@/utilities/interests";
 import React, {
   createContext,
   Dispatch,
@@ -25,6 +26,10 @@ export function GlobalContextProvider({ children }: ProviderProps) {
     isLoggedin: false,
     isNotification: false,
     notifyMessage: "",
+    allInterests: allInterests,
+    searchInterests: [],
+    userInterests: [],
+    interestLengthFlag: false,
   };
 
   const [state, dispatch] = useReducer(reducerFunction, initialState);
