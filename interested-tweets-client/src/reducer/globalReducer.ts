@@ -30,35 +30,44 @@ export default function reducerFunction(
       };
 
     case "ADD_INTEREST":
-      const interestObject = { value: action.payload, tag: action.payload };
-
-      if ([...state.userInterests, interestObject].length > 5) {
+      if ([...state.searchInterests, action.payload].length > 5) {
         return {
           ...state,
-          interestLengthFlag: true,
+          interestsLimitFlag: true,
         };
       } else {
         return {
           ...state,
-          userInterests: [...state.userInterests, interestObject],
           searchInterests: [...state.searchInterests, action.payload],
-          interestLengthFlag: false,
+          interestsLimitFlag: false,
         };
       }
 
     case "REMOVE_INTEREST":
-      const filteredUserInterests = state.userInterests.filter(
-        ({ value }) => value !== action.payload
-      );
       const filteredSearch = state.searchInterests.filter(
         (text) => text !== action.payload
       );
 
       return {
         ...state,
-        userInterests: filteredUserInterests,
         searchInterests: filteredSearch,
-        interestLengthFlag: false,
+        interestsLimitFlag: false,
+      };
+
+    case "OPEN_FILTER":
+      return {
+        ...state,
+        filterButton: true,
+      };
+    case "CLOSE_FILTER":
+      return {
+        ...state,
+        filterButton: false,
+      };
+    case "APPLY_FILTER":
+      return {
+        ...state,
+        filterButton: false,
       };
   }
   return state;

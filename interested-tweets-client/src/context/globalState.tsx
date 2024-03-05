@@ -28,8 +28,8 @@ export function GlobalContextProvider({ children }: ProviderProps) {
     notifyMessage: "",
     allInterests: allInterests,
     searchInterests: [],
-    userInterests: [],
-    interestLengthFlag: false,
+    interestsLimitFlag: false,
+    filterButton: false,
   };
 
   const [state, dispatch] = useReducer(reducerFunction, initialState);

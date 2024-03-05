@@ -33,7 +33,7 @@ export default function CustomInterestsButton({
     } else {
       setSelected(true);
     }
-  }, [searchInterests]);
+  }, [searchInterests, text]);
 
   // Function to handle button click when filter is true
   const handleButtonClick = () => {
@@ -46,7 +46,7 @@ export default function CustomInterestsButton({
 
   return (
     <div
-      className={`flex justify-center items-center gap-2 m-2 rounded-full w-fit relative overflow-hidden ${buttonStyles} ${
+      className={`flex justify-center items-center m-1 gap-2  rounded-full w-fit relative overflow-hidden ${buttonStyles} ${
         selected ? "shadow-md" : "drop-shadow-lg"
       }`}
       onClick={handleButtonClick}

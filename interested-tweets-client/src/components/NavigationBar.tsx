@@ -1,25 +1,18 @@
 import React from "react";
-import Link from "next/link";
-import { FaTwitter } from "react-icons/fa";
 import { useGlobalDispatch } from "@/context/globalState";
 import Cookies from "universal-cookie";
+import { SiYoutube } from "react-icons/si";
 
 export default function NavigationBar() {
   const dispatch = useGlobalDispatch();
   return (
     <nav className="flex justify-between items-center bg-black py-2 px-6">
       <div className="flex items-center">
-        <FaTwitter className="h-6 w-6 text-white mr-2" />
+        <SiYoutube className="h-6 w-6 text-white mr-2" />
       </div>
 
       {/* Navigation Links */}
       <div className="flex items-center space-x-4">
-        <Link className="text-white hover:underline" href="/">
-          <>Interested Tweets</>
-        </Link>
-        <Link className="text-white hover:underline" href="/myfeed">
-          <>My Feed</>
-        </Link>
         <button
           onClick={() => {
             dispatch({ type: "LOGOUT" });

@@ -10,6 +10,7 @@ import {
 } from "@/types/authentication";
 import { useGlobalDispatch } from "@/context/globalState";
 import Cookies from "universal-cookie";
+import GoogleButtonSignIn from "./GoogleButtonSignIn";
 export default function UserAuthentication({
   type,
   isLogin,
@@ -102,10 +103,11 @@ export default function UserAuthentication({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl mb-4">User {type}</h1>
+      <h1 className="text-3xl m-1">User {type}</h1>
       <div className="bg-white shadow-lg rounded px-4 py-8 w-full max-w-md">
         {isLogin && (
           <>
+            <GoogleButtonSignIn />
             <TwitterButtonSignIn />
             <div className="flex items-center justify-center my-4 gap-4">
               <div className="flex-1 h-px bg-gray-500"></div>

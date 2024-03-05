@@ -1,48 +1,31 @@
-import CustomInterestsButton from "@/components/CustomInterestsButton";
+import Authentication from "@/components/Authentication";
 import HomePageInterests from "@/components/HomePageInterests";
-
-import { useGlobalState } from "@/context/globalState";
-import Link from "next/link";
+import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import { GrCaretNext } from "react-icons/gr";
 
 export default function Home() {
-  const { userInterests, interestLengthFlag } = useGlobalState();
+  const API_KEY = process.env.YOUTUBE_API_KEY;
+  const { filterButton } = useGlobalState();
+  const dispatch = useGlobalDispatch();
+  // const YOUTUBE_URI = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&type=video&part=snippet&q=${}&maxResults=10`;
   return (
-    <div className="">
-      <div className="sticky top-0 z-50 bg-white">
-        <div className="p-4 border border-gray-400 rounded m-3">
-          <h1 className="font-bold text-3xl mb-4">Your Interests: </h1>
-          {interestLengthFlag && (
-            <p className="text-red-700 ">
-              You can choose a maximum of 5 Interests
-            </p>
-          )}
-          {userInterests.length !== 0 ? (
-            <div className="flex-col justify-between ">
-              <div className="flex flex-wrap ">
-                {userInterests.map(({ value }, index) => (
-                  <CustomInterestsButton
-                    key={index}
-                    filter={true}
-                    text={value}
-                  />
-                ))}
-              </div>
-              <Link
-                href={"/myfeed"}
-                className="bg-blue-400 rounded-full flex gap-1 m-2 items-center w-fit text-white py-2 px-4"
-              >
-                <p>NEXT</p>
-                <GrCaretNext className=" text-xl" />
-              </Link>
-            </div>
-          ) : (
-            <p className="text-gray-500 p-3.5">Choose your interests...</p>
-          )}
-        </div>
-      </div>
-
+    <>
       <HomePageInterests />
-    </div>
+      <div className="container">
+        <div className="flex items-center justify-center  gap-3 p-5">
+          <h1 className="text-3xl font-bold ">Youtube Videos</h1>
+          <button
+            className="bg-red-600 rounded-full flex gap-1 items-center text-white py-2 px-4 md:w-auto"
+            onClick={() => {
+              dispatch({ type: "OPEN_FILTER" });
+            }}
+          >
+            <p className="hidden md:block">APPLY FILTER</p>
+            <GrCaretNext className="text-xl" />
+          </button>
+        </div>
+        <div className=""></div>
+      </div>
+    </>
   );
 }

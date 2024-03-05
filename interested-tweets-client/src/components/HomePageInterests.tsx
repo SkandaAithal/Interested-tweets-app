@@ -1,16 +1,69 @@
-import { useGlobalState } from "@/context/globalState";
+import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import React from "react";
 import CustomInterestsButton from "./CustomInterestsButton";
+import { GrCaretNext } from "react-icons/gr";
 
 export default function HomePageInterests() {
-  const { allInterests } = useGlobalState();
-
+  const { allInterests, searchInterests, interestsLimitFlag, filterButton } =
+    useGlobalState();
+  const dispatch = useGlobalDispatch();
   return (
-    <main className="flex flex-wrap justify-center">
-      {allInterests &&
-        allInterests.map((text, index) => (
-          <CustomInterestsButton key={index} filter={false} text={text} />
-        ))}
+    <main
+      className={`bg-gradient-radial absolute  z-10 from-gray-500 to-transparent ${
+        filterButton ? "" : "hidden"
+      }`}
+    >
+      <div className="sticky container  mx-auto d:w-full lg:w-3/4 xl:w-2/3  top-4 z-50">
+        <div className="p-4 border border-gray-400 rounded-2xl m-3  bg-white">
+          <h1 className="font-bold text-3xl mb-3">Your Interests: </h1>
+          {interestsLimitFlag && (
+            <p className="text-red-700 mb-1 ">
+              You can choose a maximum of 5 Interests
+            </p>
+          )}
+
+          <div className="flex-col justify-between ">
+            {searchInterests.length !== 0 ? (
+              <div className="flex flex-wrap gap-2 ">
+                {searchInterests.map((value, index) => (
+                  <CustomInterestsButton
+                    key={index}
+                    filter={true}
+                    text={value}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 p-3">Choose your interests...</p>
+            )}
+
+            <button
+              onClick={() => {
+                if (searchInterests.length === 0) {
+                  dispatch({ type: "CLOSE_FILTER" });
+                } else {
+                  dispatch({ type: "APPLY_FILTER" });
+                }
+              }}
+              className="bg-red-600 rounded-full flex gap-1 m-1 mt-3 items-center w-fit text-white py-2 px-4"
+            >
+              <p>APPLY</p>
+              <GrCaretNext className=" text-xl" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className=" container mx-auto py-8 px-4  md:w-full lg:w-3/4 xl:w-2/3 ">
+        <h2 className="text-black text-4xl font-semibold mb-4">
+          All Interests
+        </h2>
+        <div className="flex flex-wrap justify-center gap-3">
+          {allInterests &&
+            allInterests.map((text, index) => (
+              <CustomInterestsButton key={index} filter={false} text={text} />
+            ))}
+        </div>
+      </div>
     </main>
   );
 }

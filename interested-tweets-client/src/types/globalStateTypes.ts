@@ -8,9 +8,10 @@ export interface GlobalStateType {
   isNotification: boolean;
   notifyMessage: string;
   allInterests: string[];
-  userInterests: interetedDataType[] | [];
+
   searchInterests: string[];
-  interestLengthFlag: boolean;
+  interestsLimitFlag: boolean;
+  filterButton: boolean;
 }
 
 export interface interetedDataType {

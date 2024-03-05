@@ -40,6 +40,7 @@ export class oAuthController {
     try {
       const { user, jwt } = req.user as { user: any; jwt: string };
       // res.json({ jwt });
+
       res.cookie("jwtToken", jwt); //,{httpOnly:true}
       res.redirect("http://localhost:3000");
     } catch (error) {
