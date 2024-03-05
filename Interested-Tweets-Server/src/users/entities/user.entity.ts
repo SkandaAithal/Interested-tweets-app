@@ -21,7 +21,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   password: string;
   @Column({ nullable: true })
-  twitterid: string;
+  socialid: string;
   @Column({ type: 'enum', enum: status, default: status.ACTIVE })
   status: status;
 

@@ -12,9 +12,11 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
 } from "@nestjs/swagger";
-import { TwitterGuard } from "src/users/twitter-guard";
+import { TwitterGuard } from "./guards/twitter-guard";
 import { OauthService } from "src/auth/oauth.service";
 import { Response, Request } from "express";
+import { InstagramGuard } from "./guards/instagram-guard";
+import { GoogleGuard } from "./guards/google-guard";
 
 @ApiTags("auth")
 @ApiBearerAuth() // Adding bearer authentication to all endpoints in this controller
@@ -40,7 +42,6 @@ export class oAuthController {
     try {
       const { user, jwt } = req.user as { user: any; jwt: string };
       // res.json({ jwt });
-
       res.cookie("jwtToken", jwt); //,{httpOnly:true}
       res.redirect("http://localhost:3000");
     } catch (error) {

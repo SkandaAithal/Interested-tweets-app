@@ -1,4 +1,4 @@
-import { OauthService } from './oauth.service';
+import { OauthService } from '../oauth.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { VerifiedCallback } from 'passport-jwt';
@@ -31,7 +31,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     // console.log(profile);
     const userProfile = {
       userId: profile.id || jsonProfile.id,
-      twitterid: profile.id || jsonProfile.id,
+      socialid: profile.id || jsonProfile.id,
       name: profile.username || jsonProfile.username,
       email:
         (profile.emails && profile.emails[0].value) ||
@@ -39,9 +39,9 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
       displayName: profile.displayName,
       picture: null,
     };
-
+    console.log(accessToken)
     // console.log(userProfile);
-    const oauthResponse = await this.oauth.validateOAuthLogin(
+    const oauthResponse = await this.oauth.validateTwitterOAuth(
       userProfile,
       'twitter',
     );
