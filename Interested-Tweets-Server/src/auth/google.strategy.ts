@@ -22,28 +22,23 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     profile: Profile,
     done: VerifyCallback
   ) {
-    // console.log(profile);
     try {
-        Logger.log(`Google UserProfile`, 'Auth');
-  
-        // Extract necessary attributes from the profile
-        const userProfile = {
-          googleid: profile.id,
-          name: profile.displayName,
-          email: profile.emails ? profile.emails[0].value : null,
-          picture: profile.photos ? profile.photos[0].value : null,
-        };
-  
-        // Pass the extracted profile to the OAuth service for validation
-        const oauthResponse = await this.oauth.validateGoogleOAuth(userProfile, 'google');
-        // console.log(oauthResponse)
-        // Return user and JWT
-        return {
-            user: oauthResponse.user,
-            jwt: oauthResponse.jwt,
-          };
-      } catch (err) {
-        done(err, false);
-      }
+      Logger.log(`Google UserProfile`, 'Auth');
+
+      const userProfile = {
+        googleid: profile.id,
+        name: profile.displayName,
+        email: profile.emails ? profile.emails[0].value : null,
+        picture: profile.photos ? profile.photos[0].value : null,
+      };
+
+      const oauthResponse = await this.oauth.validateGoogleOAuth(userProfile, 'google');
+      return {
+        user: oauthResponse.user,
+        jwt: oauthResponse.jwt,
+      };
+    } catch (err) {
+      done(err, false);
+    }
   }
 }

@@ -40,27 +40,22 @@ export class OauthService {
     provider: string
   ) {
     try {
-      // console.log(userProfile)
       const { socialid, name, email } = userProfile;
 
-      // Search for existing user by email first
       let existingUser = await this.userRepository.findOne({ where: { email } });
 
       if (!existingUser) {
-
-        if (!existingUser) {
-          existingUser = this.userRepository.create({
-            name,
-            email,
-            socialid,
-          });
-          await this.userRepository.save(existingUser);
-        }
+        existingUser = this.userRepository.create({
+          name,
+          email,
+          socialid,
+        });
+        await this.userRepository.save(existingUser);
       }
+      
       const {id} = existingUser;
 
       const jwt = await this.usersService.generateJWTTwitter(socialid);
-      // console.log({jwt, id});
       return {jwt,user:existingUser};
     } catch (err) {
       throw new InternalServerErrorException("validateOAuthLogin", err.message);
