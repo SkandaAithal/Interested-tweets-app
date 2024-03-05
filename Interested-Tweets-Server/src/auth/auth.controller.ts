@@ -12,11 +12,11 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
 } from "@nestjs/swagger";
-import { TwitterGuard } from "./twitter-guard";
+import { TwitterGuard } from "./guards/twitter-guard";
 import { OauthService } from "src/auth/oauth.service";
 import { Response, Request } from "express";
-import { InstagramGuard } from "./instagram-guard";
-import { GoogleGuard } from "./google-guard";
+import { InstagramGuard } from "./guards/instagram-guard";
+import { GoogleGuard } from "./guards/google-guard";
 
 @ApiTags("auth")
 @ApiBearerAuth() // Adding bearer authentication to all endpoints in this controller

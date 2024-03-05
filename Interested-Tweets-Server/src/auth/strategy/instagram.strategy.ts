@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 // import { Profile, Strategy } from 'passport-instagram';
 import { Profile, Strategy } from "passport-instagram";
-import { OauthService } from "./oauth.service";
+import { OauthService } from "../oauth.service";
 
 @Injectable()
 export class InstagramStrategy extends PassportStrategy(Strategy, "instagram") {

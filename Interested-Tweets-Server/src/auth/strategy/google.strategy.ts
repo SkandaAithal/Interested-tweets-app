@@ -1,9 +1,7 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { Profile, Strategy, VerifyCallback } from "passport-google-oauth20";
 import { PassportStrategy } from "@nestjs/passport";
-import { OauthService } from "./oauth.service";
-// import { ConfigService } from '@nestjs/config';
-// import { AuthService } from '../auth.service';
+import { OauthService } from "../oauth.service";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
@@ -12,7 +10,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
       clientID: process.env.Google_Client_ID,
       clientSecret: process.env.Google_Client_Secret,
       callbackURL: "http://localhost:3001/auth/GoogleCallBack",
-      scope: ["email", "profile"],
+      scope: ["email", "profile","https://www.googleapis.com/auth/youtube",
+      "https://www.googleapis.com/auth/youtube.force-ssl"],
     });
   }
 
@@ -23,6 +22,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     done: VerifyCallback
   ) {
     try {
+      // console.log(accessToken)
       Logger.log(`Google UserProfile`, 'Auth');
 
       const userProfile = {
