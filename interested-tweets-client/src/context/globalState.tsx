@@ -26,20 +26,17 @@ export function GlobalContextProvider({ children }: ProviderProps) {
     isLoggedin: false,
     isNotification: false,
     notifyMessage: "",
+    nextPageToken: "",
     allInterests: allInterests,
     searchInterests: [],
     interestsLimitFlag: false,
     filterButton: false,
+    isLoading: false,
+    youtubeVideosArray: [],
+    totalResults: 0,
   };
 
   const [state, dispatch] = useReducer(reducerFunction, initialState);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      dispatch({ type: "LOGIN" });
-    }
-  }, []);
   return (
     <GlobalStateContext.Provider value={state}>
       <GlobalDispatch.Provider value={dispatch}>

@@ -64,11 +64,33 @@ export default function reducerFunction(
         ...state,
         filterButton: false,
       };
+    case "CLEAR_LIST":
+      return {
+        ...state,
+        youtubeVideosArray: [],
+        nextPageToken: "",
+        filterButton: false,
+      };
     case "APPLY_FILTER":
       return {
         ...state,
-        filterButton: false,
+        nextPageToken: action.payload.nextPageToken,
+        youtubeVideosArray: [
+          ...state.youtubeVideosArray,
+          ...action.payload.items,
+        ],
+        isLoading: false,
+        totalResults: action.payload.pageInfo.totalResults,
       };
+
+    case "IS_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "END_LOADING":
+      return { ...state, isLoading: false };
   }
+
   return state;
 }

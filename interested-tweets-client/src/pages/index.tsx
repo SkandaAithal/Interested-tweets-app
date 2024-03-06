@@ -1,17 +1,46 @@
-import Authentication from "@/components/Authentication";
+import React, { useEffect, useRef } from "react";
 import HomePageInterests from "@/components/HomePageInterests";
+import Loader from "@/components/Loader";
 import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
+import { youtubeApiCall } from "@/utilities/youtubeApiCall";
 import { GrCaretNext } from "react-icons/gr";
+import YouTube from "react-youtube";
 
 export default function Home() {
-  const API_KEY = process.env.YOUTUBE_API_KEY;
-  const { filterButton } = useGlobalState();
+  const {
+    youtubeVideosArray,
+    isLoading,
+    filterButton,
+    nextPageToken,
+    searchInterests,
+    totalResults,
+  } = useGlobalState();
   const dispatch = useGlobalDispatch();
-  // const YOUTUBE_URI = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&type=video&part=snippet&q=${}&maxResults=10`;
+  const scrollEvent = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop + 1 >=
+      document.documentElement.scrollHeight
+    ) {
+      if (!isLoading && youtubeVideosArray.length <= totalResults) {
+        youtubeApiCall(dispatch, searchInterests, nextPageToken, false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    youtubeApiCall(dispatch, searchInterests, nextPageToken, true);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollEvent);
+
+    return () => window.removeEventListener("scroll", scrollEvent);
+  });
   return (
     <>
       <HomePageInterests />
-      <div className="container">
+
+      <div className={` w-full ${filterButton ? "fixed  z-0" : ""}`}>
         <div className="flex items-center justify-center  gap-3 p-5">
           <h1 className="text-3xl font-bold ">Youtube Videos</h1>
           <button
@@ -24,7 +53,21 @@ export default function Home() {
             <GrCaretNext className="text-xl" />
           </button>
         </div>
-        <div className=""></div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+          {youtubeVideosArray.length !== 0 &&
+            youtubeVideosArray.map((item, index) => (
+              <div key={index} className="rounded-lg overflow-hidden h-60">
+                <YouTube
+                  videoId={item.id.videoId}
+                  loading="lazy"
+                  iframeClassName="w-full h-full"
+                  className="h-full"
+                />
+              </div>
+            ))}
+        </div>
+        {isLoading && <Loader />}
       </div>
     </>
   );

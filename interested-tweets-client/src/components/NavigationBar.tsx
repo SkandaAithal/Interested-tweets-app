@@ -1,12 +1,17 @@
 import React from "react";
-import { useGlobalDispatch } from "@/context/globalState";
+import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import Cookies from "universal-cookie";
 import { SiYoutube } from "react-icons/si";
 
 export default function NavigationBar() {
   const dispatch = useGlobalDispatch();
+  const { filterButton } = useGlobalState();
   return (
-    <nav className="flex justify-between items-center bg-black py-2 px-6">
+    <nav
+      className={`flex justify-between items-center bg-black py-2 px-6 ${
+        filterButton ? "invisible" : ""
+      }`}
+    >
       <div className="flex items-center">
         <SiYoutube className="h-6 w-6 text-white mr-2" />
       </div>
@@ -16,6 +21,7 @@ export default function NavigationBar() {
         <button
           onClick={() => {
             dispatch({ type: "LOGOUT" });
+            dispatch({ type: "CLEAR_LIST" });
             const cookie = new Cookies();
             cookie.remove("jwtToken");
             localStorage.removeItem("token");
