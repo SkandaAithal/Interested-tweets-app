@@ -5,6 +5,7 @@ import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import { youtubeApiCall } from "@/utilities/youtubeApiCall";
 import { GrCaretNext } from "react-icons/gr";
 import YouTube from "react-youtube";
+import YoutubeComponent from "@/components/YoutubeComponent";
 
 export default function Home() {
   const {
@@ -58,12 +59,7 @@ export default function Home() {
           {youtubeVideosArray.length !== 0 &&
             youtubeVideosArray.map((item, index) => (
               <div key={index} className="rounded-lg overflow-hidden h-60">
-                <YouTube
-                  videoId={item.id.videoId}
-                  loading="lazy"
-                  iframeClassName="w-full h-full"
-                  className="h-full"
-                />
+                <YoutubeComponent videoId={item.id.videoId} />
               </div>
             ))}
         </div>
