@@ -4,7 +4,6 @@ import Loader from "@/components/Loader";
 import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import { youtubeApiCall } from "@/utilities/youtubeApiCall";
 import { GrCaretNext } from "react-icons/gr";
-import YouTube from "react-youtube";
 import YoutubeComponent from "@/components/YoutubeComponent";
 
 export default function Home() {
