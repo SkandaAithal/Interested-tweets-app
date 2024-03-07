@@ -7,7 +7,7 @@ export async function youtubeApiCall(
   initialCall: boolean
 ): Promise<any> {
   try {
-    const API_KEY = "AIzaSyBGemjPHHKg2dVHpFvO-SKjbLyTg4hHzMk";
+    const API_KEY = "AIzaSyAiot5L8CH6b-2Uz8BuG1mD06w_-o2UjaI";
 
     let query;
     if (searchInterests.length === 0) {
