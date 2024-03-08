@@ -17,7 +17,7 @@ export default function HomePageInterests() {
   return (
     <main
       className={`bg-gradient-radial absolute top-0 w-full
-       z-10 from-red-600 to-transparent ${filterButton ? "" : "hidden"}`}
+       z-10 from-blue-300 to-transparent ${filterButton ? "" : "hidden"}`}
     >
       <div className="sticky w-full container mx-auto d:w-full lg:w-3/4 xl:w-2/3  top-4 z-50">
         <div className="p-4 border border-gray-400 rounded-2xl m-3  bg-white">
