@@ -33,6 +33,7 @@ export default function UserAuthentication({
   });
   const router = useRouter();
   const { query } = router;
+
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInputs((prevInputs) => ({
@@ -107,15 +108,16 @@ export default function UserAuthentication({
   };
 
   useEffect(() => {
-    const { jwtToken } = query;
-    if (jwtToken) {
+    if (query.jwtToken) {
+   
       dispatch({ type: "LOGIN" });
-      localStorage.setItem("token", `Bearer ${jwtToken}`);
+      localStorage.setItem("token", `Bearer ${query.jwtToken}`);
       dispatch({ type: "NOTIFY", payload: "Login Successfull" });
       router.push("/");
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [query.jwtToken]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
