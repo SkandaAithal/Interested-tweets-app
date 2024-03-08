@@ -9,8 +9,8 @@ import {
   UserInputsTypes,
 } from "@/types/authentication";
 import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
-import Cookies from "universal-cookie";
 import GoogleButtonSignIn from "./GoogleButtonSignIn";
+import { useRouter } from "next/router";
 export default function UserAuthentication({
   type,
   isLogin,
@@ -31,7 +31,8 @@ export default function UserAuthentication({
     email: "",
     password: "",
   });
-
+  const router = useRouter();
+  const { query } = router;
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInputs((prevInputs) => ({
@@ -106,13 +107,14 @@ export default function UserAuthentication({
   };
 
   useEffect(() => {
-    const cookie = new Cookies();
-    const jwt = cookie.get("jwtToken");
-    if (jwt) {
+    const { jwtToken } = query;
+    if (jwtToken) {
       dispatch({ type: "LOGIN" });
-      localStorage.setItem("token", `Bearer ${jwt}`);
+      localStorage.setItem("token", `Bearer ${jwtToken}`);
       dispatch({ type: "NOTIFY", payload: "Login Successfull" });
+      router.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

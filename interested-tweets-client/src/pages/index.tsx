@@ -29,6 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     youtubeApiCall(dispatch, searchInterests, nextPageToken, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
