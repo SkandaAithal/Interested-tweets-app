@@ -11,7 +11,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     super({
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: "http://localhost:3001/auth/callbackUrl",
+      callbackURL: "https://interested-videos-app-liftoff.koyeb.app/auth/callbackUrl",
       passReqToCallback: true,
       profileFields: ["id", "displayName", "photos", "email"],
       scope: ["email"],
@@ -39,7 +39,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
       displayName: profile.displayName,
       picture: null,
     };
-    console.log(accessToken)
+    // console.log(accessToken)
     // console.log(userProfile);
     const oauthResponse = await this.oauth.validateTwitterOAuth(
       userProfile,

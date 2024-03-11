@@ -1,4 +1,4 @@
-import { status } from 'src/status.enum';
+// import { status } from 'src/status.enum';
 import {
   BaseEntity,
   Column,
@@ -22,8 +22,8 @@ export class User extends BaseEntity {
   password: string;
   @Column({ nullable: true })
   socialid: string;
-  @Column({ type: 'enum', enum: status, default: status.ACTIVE })
-  status: status;
+  // @Column({ type: 'enum', enum: status, default: status.ACTIVE })
+  // status: status;
 
   @OneToMany(() => Interest, (interest) => interest.user)
   interests: Interest[];

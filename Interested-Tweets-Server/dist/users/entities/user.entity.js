@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const status_enum_1 = require("../../status.enum");
 const typeorm_1 = require("typeorm");
 const interests_entity_1 = require("../../interests/entities/interests.entity");
 let User = class User extends typeorm_1.BaseEntity {
@@ -36,10 +35,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "socialid", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: status_enum_1.status, default: status_enum_1.status.ACTIVE }),
-    __metadata("design:type", String)
-], User.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => interests_entity_1.Interest, (interest) => interest.user),
     __metadata("design:type", Array)

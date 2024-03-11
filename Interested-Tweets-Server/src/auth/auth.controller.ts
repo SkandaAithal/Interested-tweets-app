@@ -42,8 +42,22 @@ export class oAuthController {
     try {
       const { user, jwt } = req.user as { user: any; jwt: string };
       // res.json({ jwt });
-      res.cookie("jwtToken", jwt);
-      res.redirect("http://localhost:3000");
+      // res.cookie("jwtToken", jwt);
+      // res.cookie("jwtToken", jwt, {
+      //   path:'/',
+      //   httpOnly:false,
+        //httpOnly: true, // Ensures the cookie is only accessible via HTTP(S) requests, not client-side JavaScript
+        // Add more options as needed, e.g., domain, path, secure, expires, etc.
+      // });
+      // res.redirect("https://interested-videos-app.vercel.app");
+      // if (jwt) {
+      //   const redirectUrl = `https://interested-videos-app.vercel.app/?login=true`;
+      //   res.redirect(redirectUrl);
+      // } else {
+      //   res.status(401).json({ error: "Unauthorized" });
+      // }
+      const redirectUrl = `https://interested-videos-app.vercel.app?jwtToken=${jwt}`;
+      res.redirect(redirectUrl);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal server error" });
@@ -63,8 +77,20 @@ export class oAuthController {
   async googleCallback(@Req() req: Request, @Res() res: Response) {
     try {
       const { user, jwt } = req.user as { user: any; jwt: string };
-      res.cookie("jwtToken", jwt);
-      res.redirect("http://localhost:3000");
+      // res.cookie("jwtToken", jwt);
+      // res.cookie("jwtToken", jwt, {
+        //httpOnly: true, // Ensures the cookie is only accessible via HTTP(S) requests, not client-side JavaScript
+        // Add more options as needed, e.g., domain, path, secure, expires, etc.
+      // });
+      // res.redirect("https://interested-videos-app.vercel.app");
+      // if (jwt) {
+      //   const redirectUrl = `https://interested-videos-app.vercel.app/?login=true`;
+      //   res.redirect(redirectUrl);
+      // } else {
+      //   res.status(401).json({ error: "Unauthorized" });
+      // }
+      const redirectUrl = `https://interested-videos-app.vercel.app?jwtToken=${jwt}`;
+      res.redirect(redirectUrl);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal server error" });
