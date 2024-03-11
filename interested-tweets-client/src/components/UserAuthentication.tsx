@@ -8,9 +8,9 @@ import {
   UserAuthenticationProps,
   UserInputsTypes,
 } from "@/types/authentication";
-import { useGlobalDispatch } from "@/context/globalState";
-import Cookies from "universal-cookie";
+import { useGlobalDispatch, useGlobalState } from "@/context/globalState";
 import GoogleButtonSignIn from "./GoogleButtonSignIn";
+import { useRouter } from "next/router";
 export default function UserAuthentication({
   type,
   isLogin,
@@ -22,6 +22,7 @@ export default function UserAuthentication({
     passwordError: "",
   };
   const dispatch = useGlobalDispatch();
+  const { isLoading } = useGlobalState();
   const [formErrors, setFormErrors] =
     useState<FormErrorsType>(initialFormErrors);
   const [showPassword, setShowPassword] = useState<boolean>(true);
@@ -30,6 +31,8 @@ export default function UserAuthentication({
     email: "",
     password: "",
   });
+  const router = useRouter();
+  const { query } = router;
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,14 +51,17 @@ export default function UserAuthentication({
       if (isLogin) {
         try {
           delete userInputs.name;
-
-          const response = await fetch("http://localhost:3001/users/login", {
-            method: "POST",
-            body: JSON.stringify(userInputs),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          dispatch({ type: "IS_LOADING" });
+          const response = await fetch(
+            "https://interested-videos-app-liftoff.koyeb.app/users/login",
+            {
+              method: "POST",
+              body: JSON.stringify(userInputs),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
           const data = await response.json();
 
           if (data.success) {
@@ -65,19 +71,26 @@ export default function UserAuthentication({
           } else {
             dispatch({ type: "NOTIFY", payload: data.message });
           }
-        } catch (err) {}
+        } catch (err) {
+        } finally {
+          dispatch({ type: "END_LOADING" });
+        }
       } else {
         try {
-          const response = await fetch("http://localhost:3001/users/register", {
-            method: "POST",
-            body: JSON.stringify(userInputs),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          dispatch({ type: "IS_LOADING" });
+          const response = await fetch(
+            "https://interested-videos-app-liftoff.koyeb.app/users/register",
+            {
+              method: "POST",
+              body: JSON.stringify(userInputs),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           const data = await response.json();
-          console.log(data);
+
           if (data.success) {
             dispatch({ type: "NOTIFY", payload: data.message });
             setUserInputs({ name: "", email: "", password: "" });
@@ -85,21 +98,26 @@ export default function UserAuthentication({
           } else {
             dispatch({ type: "NOTIFY", payload: data.message });
           }
-        } catch (err) {}
+        } catch (err) {
+        } finally {
+          dispatch({ type: "END_LOADING" });
+        }
       }
       setFormErrors(initialFormErrors);
     }
   };
 
   useEffect(() => {
-    const cookie = new Cookies();
-    const jwt = cookie.get("jwtToken");
-    if (jwt) {
+    if (query.jwtToken) {
+   
       dispatch({ type: "LOGIN" });
-      localStorage.setItem("token", `Bearer ${jwt}`);
+      localStorage.setItem("token", `Bearer ${query.jwtToken}`);
       dispatch({ type: "NOTIFY", payload: "Login Successfull" });
+      router.push("/");
     }
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.jwtToken]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -204,7 +222,7 @@ export default function UserAuthentication({
           <input
             className="bg-blue-500 cursor-pointer hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
-            value={type}
+            value={isLoading ? "Loading.." : type}
           />
           {isLogin && (
             <p className="text-sm text-gray-600 my-3">
